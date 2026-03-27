@@ -8,8 +8,10 @@ from watchdog.events import FileSystemEventHandler
 
 # ==================== 設定 ====================
 # 監視対象フォルダ（各マシンで編集してください）
-TARGET_DIR = os.path.expanduser(
-    "~/Library/CloudStorage/GoogleDrive-takachanman.private@gmail.com/マイドライブ/My_Context_Bank_2026/XX_Gemini_Context"
+# 優先順位: 環境変数 > デフォルトパス
+TARGET_DIR = os.getenv(
+    "CLEAN_GEMINI_TARGET_DIR",
+    os.path.expanduser("~/Library/CloudStorage/GoogleDrive-*/マイドライブ/My_Context_Bank_2026/XX_Gemini_Context")
 )
 
 # 移動先フォルダ

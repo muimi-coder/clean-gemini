@@ -31,19 +31,35 @@ pip install -r requirements.txt
 ```
 
 ### 2. パスの設定
-[clean_gemini_improved.py](clean_gemini_improved.py) の `TARGET_DIR` を各マシンに合わせて編集：
 
-**Mac mini / MacBook Pro 対応版**
-```python
-# Google Drive上のダウンロードフォルダを監視
-TARGET_DIR = os.path.expanduser(
-    "~/Library/CloudStorage/GoogleDrive-takachanman.private@gmail.com/マイドライブ/My_Context_Bank_2026/XX_Gemini_Context"
-)
+[clean_gemini_improved.py](clean_gemini_improved.py) は環境変数 `CLEAN_GEMINI_TARGET_DIR` を優先的に読み込みます。
+
+**方法A：環境変数で設定（推奨）**
+
+```bash
+export CLEAN_GEMINI_TARGET_DIR="~/Library/CloudStorage/GoogleDrive-[あなたのメール]/マイドライブ/My_Context_Bank_2026/XX_Gemini_Context"
 ```
 
-> ⚠️ Google Driveのフォルダパスが異なる場合は編集してください
-> 各自の環境に合わせて `GoogleDrive-[ユーザーメール]` の部分を修正してください
-> Finder で Google Drive フォルダを右クリック → 情報を見る → パスをコピー
+その後、スクリプトを実行：
+```bash
+python clean_gemini_improved.py
+```
+
+**方法B：`.env` ファイルで設定**
+
+`.env` ファイルをプロジェクトディレクトリに作成：
+```bash
+# .env
+CLEAN_GEMINI_TARGET_DIR="/Users/[username]/Library/CloudStorage/GoogleDrive-[あなたのメール]/マイドライブ/My_Context_Bank_2026/XX_Gemini_Context"
+```
+
+> ⚠️ `.env` ファイルは `.gitignore` に追加して、GitHub にアップロードされないようにしてください
+
+**方法C：デフォルトパス（フォルダがワイルドカード対応の場合）**
+
+Google Drive フォルダの名前パターンが統一していれば、自動検出が可能です。詳しくはコード内のコメントを参照。
+
+> 💡 **推奨**: 各マシンで環境変数を一度設定すれば、以降は自動で認識されます
 
 ---
 
