@@ -1,9 +1,25 @@
-# 🧹 お掃除エージェント - clean_gemini
+# 🧹 お掃除エージェント - Gemini Context Cleaner
 
-## 概要
-Chromeのダウンロードフォルダを監視して、不要なファイル（.dmg, .pkg, .zip, .exe など）を自動で Downloads フォルダに移動するPythonスクリプト。
+## 🚀 プロジェクトの目的
+このプロジェクトは、AI（Gemini）との対話ログを効率的に管理し、作業環境を常に清潔に保つために開発されました。
 
-**ポーリング方式から ファイルシステム監視方式に変更** → CPU/電力効率アップ⚡
+### 📋 背景と課題
+* **ログの集約**: Geminiとの膨大な会話ログ（AIExporter経由）を1箇所にまとめるため、Chromeのデフォルト保存先をGoogle Drive上の特定フォルダに設定。
+* **副作用**: Chrome経由でダウンロードするアプリのインストーラー（.dmg, .pkg）や圧縮ファイル（.zip）まで同じフォルダに混入し、管理が煩雑になる課題が発生。
+
+### 💡 解決策
+Pythonの `watchdog` ライブラリを使用した常駐型エージェント。
+指定フォルダをリアルタイム監視し、特定の拡張子を持つファイルが置かれた瞬間に、ローカルの `Downloads` フォルダへ「シュンッ！」と自動移動させます。
+
+## 🛠️ 技術スタック
+- **Language**: Python 3.9+
+- **Library**: watchdog (イベント駆動型ファイルシステム監視)
+- **Infrastructure**: Mac mini (24/7 稼働の司令塔)
+- **Management**: GitHub (Mac mini / MBP の設定同期)
+
+## 🏗️ D-Twin（デジタルツイン）構成
+- **Mac mini**: 本体の「脳」として常時稼働し、クラウド経由で全デバイスのフォルダを清掃。
+- **MacBook Pro**: GitHubからコードをクローンし、必要に応じてローカルでも同等のエージェントを稼働可能。
 
 ---
 
@@ -21,11 +37,12 @@ pip install -r requirements.txt
 ```python
 # Google Drive上のダウンロードフォルダを監視
 TARGET_DIR = os.path.expanduser(
-    "~/Google Drive/My_Context_Bank_2026/XX_Gemini_Context"
+    "~/Library/CloudStorage/GoogleDrive-takachanman.private@gmail.com/マイドライブ/My_Context_Bank_2026/XX_Gemini_Context"
 )
 ```
 
 > ⚠️ Google Driveのフォルダパスが異なる場合は編集してください
+> 各自の環境に合わせて `GoogleDrive-[ユーザーメール]` の部分を修正してください
 > Finder で Google Drive フォルダを右クリック → 情報を見る → パスをコピー
 
 ---
@@ -175,11 +192,13 @@ DEST_DIR = os.path.expanduser("~/Desktop")  # 例：デスクトップに移動
 ## 改善履歴
 
 **v2.0（新版）**
-- ✨ watchdog ライブラリで ファイルシステムイベント監視に切り替え
+- ✨ watchdog ライブラリで ファイルシステムイベント監視に切り替え（ポーリング方式から改善）
 - ✨ ログ機能追加（~/.clean_gemini/clean_gemini.log）
 - ✨ 重複ファイル対応（タイムスタンプで自動リネーム）
 - ✨ ダウンロード中ファイルスキップ（.tmp/.crdownload）
 - ✨ 詳細なエラー分類処理
+- ✨ launchd による Mac mini での常時稼働設定
+- ✨ GitHub での複数マシン対応設定
 
 **v1.0（旧版）**
-- 10秒おきのポーリング方式
+- 10秒おきのポーリング方式（見守り続ける方式、電力効率が低い）
