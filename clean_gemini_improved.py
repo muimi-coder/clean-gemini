@@ -18,7 +18,7 @@ TARGET_DIR = os.getenv(
 DEST_DIR = os.path.expanduser("~/Downloads")
 
 # 追い出したい拡張子
-TRASH_EXTENSIONS = {".dmg", ".pkg", ".zip", ".exe", ".iso"}
+TRASH_EXTENSIONS = {".dmg", ".pkg", ".zip", ".exe", ".iso", ".app", ".nosync", ".tar", ".bz2", ".7z", ".dSYM"}
 
 # ログファイル
 LOG_DIR = os.path.expanduser("~/.clean_gemini")
